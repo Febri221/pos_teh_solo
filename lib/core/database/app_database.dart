@@ -1,11 +1,14 @@
 import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
-import 'tables/products_table.dart'; 
+import 'tables/products_table.dart';
+import 'tables/orders_table.dart';
+import 'tables/order_items_table.dart';
+import 'tables/stock_opname_table.dart';
 
-// 1. INI WAJIB ADA (Jembatan buat file otomatisnya)
+
 part 'app_database.g.dart';
 
-@DriftDatabase(tables: [Products])
+@DriftDatabase(tables: [Products, Orders, OrderItems, StockOpnames])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 

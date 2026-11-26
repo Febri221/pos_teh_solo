@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'core/di/injection.dart';
-import 'features/product/presentation/screens/cashier_screen.dart';
+import 'features/dashboard/presentation/screen/main_navigation_screen.dart'; 
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
-  // Inisialisasi Dependency Injection
   setupLocator();
 
   runApp(const TehSoloApp());
@@ -23,7 +22,7 @@ class TehSoloApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.brown),
         useMaterial3: true,
       ),
-      home: const CashierScreen(),
+      home: const MainNavigationPage(), 
     );
   }
 }
