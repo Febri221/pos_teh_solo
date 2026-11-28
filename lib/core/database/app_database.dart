@@ -4,11 +4,13 @@ import 'tables/products_table.dart';
 import 'tables/orders_table.dart';
 import 'tables/order_items_table.dart';
 import 'tables/stock_opname_table.dart';
+import 'tables/users_table.dart';
+import 'tables/shifts_table.dart';
 
 
 part 'app_database.g.dart';
 
-@DriftDatabase(tables: [Products, Orders, OrderItems, StockOpnames])
+@DriftDatabase(tables: [Products, Orders, OrderItems, StockOpnames, Users, Shifts])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 

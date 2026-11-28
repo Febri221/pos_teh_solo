@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:teh_solo_pos/features/auth/presentation/screens/login_screen.dart';
 import '../bloc/cart_state.dart';
 import 'package:teh_solo_pos/features/pos/presentation/bloc/cart_event.dart';
 import 'package:teh_solo_pos/features/product/presentation/bloc/product_event.dart';
@@ -34,13 +35,54 @@ class CashierScreen extends StatelessWidget {
           backgroundColor: Colors.brown,
           foregroundColor: Colors.white,
           actions: [
-            BlocBuilder<ProductBloc, ProductState>(
-              builder: (context, state) {
-                return IconButton(
-                  icon: const Icon(Icons.refresh),
-                  onPressed: () {
-                    context.read<ProductBloc>().add(LoadProducts());
-                  },
+            // Tombol Refresh Produk
+            IconButton(
+              icon: const Icon(Icons.refresh),
+              onPressed: () {
+                context.read<ProductBloc>().add(LoadProducts());
+              },
+            ),
+
+            // ---> TOMBOL LOGOUT / GANTI SHIFT <---
+            IconButton(
+              icon: const Icon(Icons.logout),
+              onPressed: () {
+                // Konfirmasi sebelum logout
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: const Text('Keluar Aplikasi'),
+                    content: const Text('Apakah Anda yakin ingin keluar?'),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context), // Batal
+                        child: const Text('Batal',
+                            style: TextStyle(color: Colors.grey)),
+                      ),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.red,
+                          foregroundColor: Colors.white,
+                        ),
+                        onPressed: () {
+                          // Tutup dialog konfirmasi
+                          Navigator.pop(context);
+
+                          // Lempar balik ke LoginScreen dan hapus riwayat navigasi sebelumnya
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) =>
+                                  const LoginScreen(), // Pastikan mengarah ke LoginScreen lo
+                            ),
+                            (route) =>
+                                false, // Hapus semua tumpukan halaman sebelumnya
+                          );
+                        },
+                        child: const Text('Keluar'),
+                      ),
+                    ],
+                  ),
                 );
               },
             ),
@@ -60,8 +102,10 @@ class CashierScreen extends StatelessWidget {
                   }
 
                   return GridView.builder(
-                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 100), // Padding bawah agar tidak tertutup floating bar
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    padding: const EdgeInsets.fromLTRB(16, 16, 16,
+                        100), // Padding bawah agar tidak tertutup floating bar
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       childAspectRatio: 0.95,
                       crossAxisSpacing: 12,
@@ -74,10 +118,11 @@ class CashierScreen extends StatelessWidget {
                         onTap: () {
                           // Masukkan produk ke keranjang saat diklik!
                           context.read<CartBloc>().add(AddToCart(product));
-                          
+
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text('+1 ${product.name} (${product.size})'),
+                              content:
+                                  Text('+1 ${product.name} (${product.size})'),
                               duration: const Duration(milliseconds: 500),
                               backgroundColor: Colors.brown.shade700,
                             ),
@@ -112,7 +157,8 @@ class CashierScreen extends StatelessWidget {
                                       color: Colors.brown.shade50,
                                       borderRadius: BorderRadius.circular(10),
                                     ),
-                                    child: const Text('🍵', style: TextStyle(fontSize: 20)),
+                                    child: const Text('🍵',
+                                        style: TextStyle(fontSize: 20)),
                                   ),
                                   const SizedBox(height: 8),
                                   Text(
@@ -145,7 +191,8 @@ class CashierScreen extends StatelessWidget {
                                 ],
                               ),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     'Rp ${product.price.toStringAsFixed(0)}',
@@ -185,7 +232,8 @@ class CashierScreen extends StatelessWidget {
               child: BlocBuilder<CartBloc, CartState>(
                 builder: (context, state) {
                   if (state.items.isEmpty) {
-                    return const SizedBox.shrink(); // Sembunyikan kalau keranjang kosong
+                    return const SizedBox
+                        .shrink(); // Sembunyikan kalau keranjang kosong
                   }
 
                   return AnimatedContainer(
@@ -193,17 +241,19 @@ class CashierScreen extends StatelessWidget {
                     curve: Curves.easeInOut,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF113F29), // Hijau gelap elegan ala Figma
+                        backgroundColor: const Color(
+                            0xFF113F29), // Hijau gelap elegan ala Figma
                         foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 16),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(16),
                         ),
                         elevation: 6,
                       ),
-                      onPressed: () {
+                      onPressed: () async {
                         // Buka Modal Keranjang saat bar bawah diklik
-                        showModalBottomSheet(
+                        await showModalBottomSheet(
                           context: context,
                           isScrollControlled: true,
                           backgroundColor: Colors.transparent,
@@ -212,6 +262,10 @@ class CashierScreen extends StatelessWidget {
                             child: const CartBottomSheet(),
                           ),
                         );
+
+                        if (context.mounted) {
+                          context.read<ProductBloc>().add(LoadProducts());
+                        }
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -224,7 +278,8 @@ class CashierScreen extends StatelessWidget {
                                   color: Colors.white.withOpacity(0.2),
                                   borderRadius: BorderRadius.circular(8),
                                 ),
-                                child: const Icon(Icons.shopping_cart, size: 20),
+                                child:
+                                    const Icon(Icons.shopping_cart, size: 20),
                               ),
                               const SizedBox(width: 12),
                               Text(

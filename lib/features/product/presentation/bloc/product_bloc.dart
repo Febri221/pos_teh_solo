@@ -8,7 +8,12 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
 
   ProductBloc(this.repository) : super(ProductInitial()) {
     on<LoadProducts>((event, emit) async {
-      emit(ProductLoading());
+      // HAPUS ATAU JANGAN EMIT ProductLoading JIKA TIDAK PERLU, 
+      // ATAU GUNAKAN LOADING HANYA JIKA LIST PRODUK MASIH KOSONG (STATE AWAL)
+      if (state is! ProductLoaded) {
+        emit(ProductLoading());
+      }
+      
       try {
         final products = await repository.getProducts();
         emit(ProductLoaded(products));

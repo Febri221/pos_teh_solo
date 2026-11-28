@@ -105,10 +105,8 @@ class CartBottomSheet extends StatelessWidget {
                                 icon: const Icon(Icons.remove_circle_outline,
                                     color: Colors.brown),
                                 onPressed: () {
-                                  context
-                                      .read<CartBloc>()
-                                      .add(RemoveFromCart(cartItem.product));
-                                },
+  context.read<CartBloc>().add(RemoveFromCart(cartItem.product));
+},
                               ),
                               Text(
                                 '${cartItem.quantity}',
@@ -121,10 +119,8 @@ class CartBottomSheet extends StatelessWidget {
                                 icon: const Icon(Icons.add_circle_outline,
                                     color: Colors.brown),
                                 onPressed: () {
-                                  context
-                                      .read<CartBloc>()
-                                      .add(AddToCart(cartItem.product));
-                                },
+  context.read<CartBloc>().add(AddToCart(cartItem.product));
+},
                               ),
                             ],
                           ),

@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:teh_solo_pos/features/history/presentation/screen/report_screen.dart';
+import 'package:teh_solo_pos/features/shift/presentation/screens/shift_screen.dart';
 import '../../../pos/presentation/screens/cashier_screen.dart';
+import '../../../inventory/presentation/screens/inventory_screen.dart';
 
 
-class MainNavigationPage extends StatefulWidget {
-  const MainNavigationPage({super.key});
+class MainNavigationScreen   extends StatefulWidget {
+  const MainNavigationScreen  ({super.key});
 
   @override
-  State<MainNavigationPage> createState() => _MainNavigationPageState();
+  State<MainNavigationScreen  > createState() => _MainNavigationPageState();
 }
 
-class _MainNavigationPageState extends State<MainNavigationPage> {
+class _MainNavigationPageState extends State<MainNavigationScreen  > {
   // Index aktif untuk Bottom Navigation
   int _currentIndex = 0;
 
@@ -18,9 +20,9 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
   // Saat ini CashierPage sudah aktif, sisanya kita buatkan placeholder dulu
   final List<Widget> _pages = [
     const CashierScreen(),
-    const PlaceholderPageWidget(title: 'Inventori & Stok'),
+    const InventoryScreen(),
     const ReportScreen(),
-    const PlaceholderPageWidget(title: 'Manajemen Shift'),
+    const ShiftScreen(),
   ];
 
   @override

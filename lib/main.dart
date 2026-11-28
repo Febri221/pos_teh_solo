@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'core/di/injection.dart';
-import 'features/dashboard/presentation/screen/main_navigation_screen.dart'; 
+import 'features/auth/presentation/screens/login_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,7 +22,7 @@ class TehSoloApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.brown),
         useMaterial3: true,
       ),
-      home: const MainNavigationPage(), 
+      home: const LoginScreen(), 
     );
   }
 }
